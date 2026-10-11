@@ -1,0 +1,22 @@
+# Build artefacts
+build/
+.venv/
+__pycache__/
+*.pyc
+
+# Terraform
+infra/.terraform/
+infra/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+
+# Generated from terraform outputs; contains account-specific names
+.iacguard.json
+.pytest_cache/
+
+# Submission documents - kept local, not published
+docs/*.pdf
+docs/DEMO_AND_SCREENSHOTS.md
+docs/SLIDE_CONTENT.md

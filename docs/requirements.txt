@@ -1,0 +1,2 @@
+# Only needed to regenerate the PDFs from the Markdown sources.
+reportlab>=4.0

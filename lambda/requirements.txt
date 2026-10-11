@@ -1,0 +1,3 @@
+# boto3 is provided by the Lambda runtime, so it is deliberately not pinned
+# here: shipping our own copy would add ~10 MB for no benefit.
+python-hcl2==8.1.4
