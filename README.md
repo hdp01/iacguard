@@ -65,7 +65,10 @@ make test     # 46 unit tests, no AWS needed
 make destroy  # remove everything
 ```
 
-`make help` lists every target.
+`make help` lists every target. `make screens` captures the terminal output
+of real runs as PNGs, for use in documentation. (`make deck` builds a slide
+deck from them, but its generator holds presentation content rather than
+project code and is not kept in this repository.)
 
 ## Using it
 

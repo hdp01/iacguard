@@ -20,3 +20,15 @@ crash.log
 docs/*.pdf
 docs/DEMO_AND_SCREENSHOTS.md
 docs/SLIDE_CONTENT.md
+
+# Node tooling for the deck generator
+node_modules/
+package.json
+package-lock.json
+
+# Generated submission assets - kept local, not published.
+# build_deck.js is here rather than in scripts/ because it embeds the whole
+# deck's text, not just the code that lays it out.
+assets/
+*.pptx
+scripts/build_deck.js

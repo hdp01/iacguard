@@ -6,7 +6,11 @@ PY    := $(VENV)/bin/python
 PIP   := $(VENV)/bin/pip
 TF    := terraform -chdir=infra
 
-.PHONY: help install run deploy test load-test metrics docs destroy clean
+# The deck generator needs the pptx skill's theme helper and a metrics file.
+PPTX_SKILL   ?= $(HOME)/.claude/skills/synced/62a18d42-c829-4249-8859-f58a9e2ad134_698cf43b-a118-4081-b0e5-b5a8b7f6790e/pptx
+METRICS_JSON ?= build/metrics.json
+
+.PHONY: help install run deploy test load-test metrics docs screens deck destroy clean
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
@@ -44,6 +48,18 @@ docs: install ## Regenerate the PDF guides
 	$(PIP) install --quiet -r docs/requirements.txt
 	$(PY) scripts/md_to_pdf.py docs/DEMO_AND_SCREENSHOTS.md docs/IaCGuard-Demo-and-Screenshot-Guide.pdf
 	$(PY) scripts/md_to_pdf.py docs/SLIDE_CONTENT.md docs/IaCGuard-Slide-Content.pdf
+
+screens: install ## Re-capture the terminal screenshots from real runs
+	$(PY) scripts/capture_screens.py
+
+deck: install ## Rebuild the submission deck (needs the local-only generator)
+	@test -f scripts/build_deck.js || { \
+	  echo "scripts/build_deck.js is not in this repository."; \
+	  echo "It holds presentation content rather than project code and is"; \
+	  echo "kept locally. Nothing else here depends on it."; exit 1; }
+	@test -d node_modules || npm install --no-fund --no-audit pptxgenjs
+	PPTX_SKILL="$(PPTX_SKILL)" NODE_PATH="$(PWD)/node_modules" \
+	  METRICS_JSON="$(METRICS_JSON)" node scripts/build_deck.js
 
 destroy: ## Remove all AWS resources
 	$(TF) destroy -auto-approve
